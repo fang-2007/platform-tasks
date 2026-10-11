@@ -13,7 +13,15 @@
   "cliWorkflow": "passed, four reports",
   "sampleRows": 50,
   "dockerLocal": "not available",
-  "ci": "configured; pending remote execution",
-  "assistance": "Code fixes, tests and documentation completed with Codex",
-  "productionPerformance": "not measured"
+  "ci": {
+    "conclusion": "success",
+    "runId": 38130179831,
+    "url": "https://github.com/fang-2007/platform-tasks/actions/runs/38130179831",
+    "receipt": "ci-receipt.json"
+  },
+  "assistance": "This review, code fixes, tests and documentation completed with Codex; original authorship is not inferred.",
+  "productionPerformance": "not measured",
+  "validatedCodeCommit": "60998c52b09bf2cc9047b140d4ef4714b22cc3ab",
+  "streamlitAppTest": "passed: zero exceptions, zero metrics rendered as 0 rather than N/A",
+  "dockerRemote": "GitHub Actions required Docker build and run steps passed"
 }

@@ -2,7 +2,7 @@
 
 风控数据质量检查与规则策略离线评估练习。包含多格式加载、字段与标签检查、YAML规则执行、指标计算、CLI、HTML报告和Streamlit入口。
 
-这是公开的学习与能力说明作品，代码和本次修复借助AI工具完成。仓库提供实现和验证方式，不以演示数据或提交记录证明线上采用、开发年限、全栈经验或生产性能。
+这是公开的学习与能力说明作品，本次审查、修复与验证借助AI工具完成。仓库提供实现和验证方式，不以演示数据或提交记录证明线上采用、开发年限、全栈经验或生产性能。
 
 ## 安装和使用
 
@@ -62,7 +62,7 @@ python -m pytest
 python scripts/verify-example.py --output validation-output
 ```
 
-2026年10月11日本地Python 3.12复核：72项测试通过。覆盖率统计只包含核心模块及工具模块，排除了CLI、Web和报告；见`docs/validation.json`。示例复核脚本运行CLI并生成四份报告，使用固定、人工可核对的预期结果检查指标。
+2026年10月11日本地Python 3.12复核：72项测试通过，核心及工具模块覆盖率87.20%，统计排除了CLI、Web和报告；看板启动和零值显示另经Streamlit AppTest检查通过。见`docs/validation.json`。示例复核脚本运行CLI并生成四份报告，使用固定、人工可核对的预期结果检查指标。
 
 使用仓库原50行演示CSV与两份YAML得到：
 
@@ -88,7 +88,7 @@ docker build -t risk-control-validation .
 docker run --rm risk-control-validation
 ```
 
-Docker默认执行同一示例复核入口。工作流文件为仓库根目录`.github/workflows/risk-control-quality.yml`，配置Python测试、示例验证和Docker构建运行。实际运行状态应查看[GitHub Actions](https://github.com/fang-2007/platform-tasks/actions/workflows/risk-control-quality.yml)。本地Docker环境不可用，不能把本地Python通过写成Docker通过；远端结果会在验证记录中单独记载。
+Docker默认执行同一示例复核入口。工作流文件为仓库根目录`.github/workflows/risk-control-quality.yml`，配置Python测试、示例验证和Docker构建运行。代码提交`60998c5`的[远端运行38130179831](https://github.com/fang-2007/platform-tasks/actions/runs/38130179831)状态为Success。该流程在Linux执行了上述检查；本地Docker环境不可用，容器通过的证据来自此次远端运行。
 
 ## 目录
 

@@ -1,0 +1,20 @@
+{
+  "runId": 38130179831,
+  "headSha": "60998c52b09bf2cc9047b140d4ef4714b22cc3ab",
+  "conclusion": "success",
+  "jobConclusion": "succeeded",
+  "htmlUrl": "https://github.com/fang-2007/platform-tasks/actions/runs/38130179831",
+  "jobUrl": "https://github.com/fang-2007/platform-tasks/actions/runs/38130179831/job/114442692500",
+  "requiredSteps": [
+    "Python 3.12 on Linux",
+    "pytest",
+    "CLI example verification",
+    "Docker build",
+    "Docker run"
+  ],
+  "artifact": {
+    "name": "risk-control-validation",
+    "digest": "sha256:3432a48f837d414cf4605ef7c4672ae6bbda922969bc57ce8066a901b937536d"
+  },
+  "evidence": "Public workflow and job pages; complete step logs were not available anonymously."
+}

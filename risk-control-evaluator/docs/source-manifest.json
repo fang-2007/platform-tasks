@@ -1,0 +1,30 @@
+{
+  "codeCommit": "60998c52b09bf2cc9047b140d4ef4714b22cc3ab",
+  "byteSource": "git blob at fixed code commit; no checkout newline conversion",
+  "files": [
+    {
+      "path": "src/risk_eval/utils/config.py",
+      "sha256": "22842c7597e93a1fdedd0d75ff4e851e74d9b713b26ccec3d01c8e85a4b824bc"
+    },
+    {
+      "path": "src/risk_eval/core/rule_engine.py",
+      "sha256": "c85616fce61074655c780600875708a65438f8982323ae4f66fe83fb36676632"
+    },
+    {
+      "path": "src/risk_eval/core/evaluator.py",
+      "sha256": "a490ab52498ae8adf31acbd3531ce76452677726dc283367cb7964a701fea181"
+    },
+    {
+      "path": "tests/test_regressions.py",
+      "sha256": "4c5edbdc77bf1a625824d116668e1dd65cf545843f08dcbaee169474615337d7"
+    },
+    {
+      "path": "scripts/verify-example.py",
+      "sha256": "2de9f2d9f5681c29da7f00b041725854f16c7567ef25a315a87bc3443f21ee3f"
+    },
+    {
+      "path": "Dockerfile",
+      "sha256": "fb451e55aa2566ff0fa616ffed937523427c823f68667ec9aabcf7b542fc6d53"
+    }
+  ]
+}
