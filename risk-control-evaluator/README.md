@@ -1,304 +1,115 @@
-# 🛡️ Risk Control Evaluator
+# Risk Control Evaluator
 
-[![CI](https://github.com/yourusername/risk-control-evaluator/actions/workflows/ci.yml/badge.svg)](https://github.com/yourusername/risk-control-evaluator/actions/workflows/ci.yml)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+风控数据质量检查与规则策略离线评估练习。包含多格式加载、字段与标签检查、YAML规则执行、指标计算、CLI、HTML报告和Streamlit入口。
 
-> **A professional, production-ready toolkit for risk control data quality assurance and strategy rule evaluation.**
+这是公开的学习与能力说明作品，代码和本次修复借助AI工具完成。仓库提供实现和验证方式，不以演示数据或提交记录证明线上采用、开发年限、全栈经验或生产性能。
 
-This project demonstrates enterprise-grade Python engineering practices including modular architecture, design patterns (Strategy, Factory, Dependency Injection), comprehensive type safety, structured logging, and automated testing with CI/CD pipelines.
+## 安装和使用
 
-## ✨ Features
-
-### Data Quality Inspection
-- **Field completeness** analysis with null rate detection
-- **Duplicate record** detection (by primary key or full row)
-- **Label validation** with imbalance detection
-- **Outlier detection** using IQR and Z-Score methods
-- **Consistency checks** for temporal ordering, range validation, and column dependencies
-
-### Rule Engine
-- **YAML-configured rules** with human-readable syntax
-- **Multiple condition types**: numeric comparison, string matching, regex, set inclusion, null checks
-- **Logical composition**: `AND` / `OR` condition grouping
-- **Flexible strategies**: any-hit, all-hit, or score-threshold based decision logic
-- **Rule explainability**: trace which conditions triggered for any record
-
-### Strategy Evaluation
-- **Core metrics**: Recall, Precision, FPR (False Positive Rate), FNR, Specificity, Accuracy, F1
-- **Risk-specific metrics**: Hit Rate, Pass Rate, Bad Rate in Hits/Passed, Lift
-- **Statistical measures**: KS Statistic, AUC-ROC
-- **A/B comparison**: Side-by-side strategy comparison with recommendation engine
-
-### Reporting
-- **Interactive HTML reports** with embedded Plotly visualizations
-- **CLI output** with rich terminal formatting
-- **Streamlit web dashboard** for drag-and-drop analysis
-
-## 🏗️ Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                        CLI / Web UI                          │
-│                   (Typer / Streamlit)                        │
-└──────────────────────┬──────────────────────────────────────┘
-                       │
-┌──────────────────────▼──────────────────────────────────────┐
-│                    Core Pipeline                             │
-│  ┌─────────────┐  ┌──────────────┐  ┌─────────────────┐   │
-│  │ Data Loader │→ │ Quality      │→ │ Rule Engine     │   │
-│  │ (Strategy)  │  │ Checker      │  │ (DSL + Executor)│   │
-│  └─────────────┘  └──────────────┘  └─────────────────┘   │
-│         ↑                                    │              │
-│         │                              ┌─────▼─────┐       │
-│         │                              │ Evaluator │       │
-│         │                              │ (Metrics) │       │
-│         │                              └─────┬─────┘       │
-│         │                                    │              │
-│         └────────────┬───────────────────────┘              │
-│                      │                                      │
-│               ┌──────▼──────┐  ┌─────────────┐             │
-│               │ HTML Report │  │ Plotly      │             │
-│               │ Generator   │  │ Charts      │             │
-│               └─────────────┘  └─────────────┘             │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Design Patterns Used
-- **Strategy Pattern**: `DataLoader` abstraction for multiple file formats
-- **Factory Pattern**: `DataLoaderFactory` for runtime loader selection
-- **Dependency Injection**: `Evaluator` accepts rule engines via protocol interfaces
-- **Template Method**: Report generation with pluggable chart components
-
-## 🚀 Quick Start
-
-### Installation
+Python 3.12是本次验证环境。直接依赖版本见`requirements-validation.txt`；该文件没有锁定间接依赖。项目声明的Python 3.10+范围尚未逐版本验证。
 
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/risk-control-evaluator.git
-cd risk-control-evaluator
-
-# Install with all dependencies
-pip install -e ".[all]"
-
-# Or install core only
-pip install -e .
-
-# For web UI only
-pip install -e ".[web]"
+git clone https://github.com/fang-2007/platform-tasks.git
+cd platform-tasks/risk-control-evaluator
+python -m venv .venv
+# Linux/macOS: source .venv/bin/activate
+# Windows PowerShell: .venv\Scripts\Activate.ps1
+python -m pip install -r requirements-validation.txt
+python -m pip install --no-deps -e .
 ```
 
-### CLI Usage
+CLI接口保持以下用法：
 
 ```bash
-# 1. Check data quality
-risk-eval quality-check data/sample_credit_data.csv --label is_bad
+risk-eval quality-check data/sample_credit_data.csv --label is_bad --report quality.html
+risk-eval evaluate data/sample_credit_data.csv --rules configs/example_rules.yaml --label is_bad --report strategy-a.html
+risk-eval compare data/sample_credit_data.csv --rules-a configs/example_rules.yaml --rules-b configs/example_rules_b.yaml --label is_bad --report comparison.html
+risk-eval --help
+```
 
-# 2. Evaluate a single strategy
-risk-eval evaluate data/sample_credit_data.csv \
-  --rules configs/example_rules.yaml \
-  --label is_bad \
-  --report eval_report.html
+Web入口为可选依赖：
 
-# 3. Compare two strategies (A/B test)
-risk-eval compare data/sample_credit_data.csv \
-  --rules-a configs/example_rules.yaml \
-  --rules-b configs/example_rules_b.yaml \
-  --label is_bad \
-  --report comparison_report.html
-
-# 4. Launch web dashboard
+```bash
+python -m pip install ".[web]"
 risk-eval serve
 ```
 
-### Web Interface
+## 规则和指标口径
 
-Launch the Streamlit dashboard:
-
-```bash
-make run-web
-# or
-streamlit run src/risk_eval/web/app.py
-```
-
-Then open your browser to `http://localhost:8501`.
-
-**Features:**
-- Upload CSV/Excel/JSON/Parquet files
-- Upload or edit YAML rule configurations inline
-- Real-time data quality inspection
-- Interactive evaluation metrics and charts
-- Side-by-side A/B strategy comparison
-
-## 📊 Example Output
-
-### Strategy Evaluation
-```
-Evaluation Results: Conservative Strategy A
-
-Metric                Value
-─────────────────────────────
-Sample Size           50
-Hit Rate              42.0%
-Pass Rate             58.0%
-Recall                85.7%
-Precision             71.4%
-False Positive Rate   17.2%
-Accuracy              76.0%
-F1 Score              0.780
-KS Statistic          0.685
-AUC-ROC               0.843
-Lift                  1.70
-```
-
-### A/B Comparison
-```
-A/B Comparison: Conservative Strategy A vs Aggressive Strategy B
-
-Strategy B shows significantly better recall with similar FPR.
-Strategy B has lower false positive rate. Strategy A allows more approvals.
-
-Metric                  Conservative A    Aggressive B    Difference
-─────────────────────────────────────────────────────────────────────
-Recall                  85.7%             100.0%          +14.3%
-Precision               71.4%             63.2%           -8.2%
-False Positive Rate     17.2%             37.9%           +20.7%
-Hit Rate                42.0%             76.0%           +34.0%
-Pass Rate               58.0%             24.0%           -34.0%
-```
-
-## 🧪 Testing
-
-```bash
-# Run all tests with coverage
-make test
-
-# Run linting
-make lint
-
-# Run type checking
-make type-check
-
-# Run all checks
-make check
-```
-
-The test suite includes:
-- Unit tests for all core modules (`pytest`)
-- Parameterized tests for edge cases
-- Mock-based isolation for external dependencies
-- Coverage gate at **80%**
-
-## 📁 Project Structure
-
-```
-risk-control-evaluator/
-├── .github/workflows/ci.yml       # GitHub Actions: test + lint + type-check
-├── configs/
-│   ├── example_rules.yaml         # Conservative strategy example
-│   └── example_rules_b.yaml       # Aggressive strategy example
-├── data/
-│   └── sample_credit_data.csv     # 50-row sample dataset
-├── src/risk_eval/
-│   ├── core/
-│   │   ├── data_loader.py         # Strategy-pattern multi-format loader
-│   │   ├── quality_checker.py     # Data quality inspection engine
-│   │   ├── rule_engine.py         # YAML-based rule execution engine
-│   │   └── evaluator.py           # Risk metrics calculator
-│   ├── report/
-│   │   ├── html_report.py         # Jinja2 HTML report generator
-│   │   └── chart_generator.py     # Plotly visualization engine
-│   ├── cli/
-│   │   └── main.py                # Typer CLI with rich output
-│   ├── web/
-│   │   └── app.py                 # Streamlit interactive dashboard
-│   └── utils/
-│       ├── config.py              # Pydantic configuration models
-│       ├── exceptions.py          # Custom exception hierarchy
-│       └── logger.py              # Structlog configuration
-├── tests/
-│   ├── conftest.py                # Shared pytest fixtures
-│   ├── test_data_loader.py        # Data loading tests
-│   ├── test_quality_checker.py    # Quality check tests
-│   ├── test_rule_engine.py        # Rule engine tests
-│   └── test_evaluator.py          # Evaluation metrics tests
-├── pyproject.toml                 # Project config, tool settings
-├── Makefile                       # Common development commands
-└── README.md                      # This file
-```
-
-## 🛠️ Technology Stack
-
-| Layer | Technology | Purpose |
-|-------|-----------|---------|
-| Language | Python 3.10+ | Core runtime |
-| Data | Pandas | Data manipulation |
-| Types | Pydantic + mypy | Runtime validation + static type checking |
-| CLI | Typer + Rich | Type-safe CLI with beautiful terminal output |
-| Web | Streamlit | Rapid data app development |
-| Viz | Plotly | Interactive charts |
-| Config | YAML + Pydantic | Human-readable rule definitions |
-| Logs | structlog | Structured JSON logging |
-| Testing | pytest + pytest-cov | Unit testing with coverage |
-| Linting | ruff | Fast Python linting and formatting |
-| CI/CD | GitHub Actions | Automated testing pipeline |
-
-## 🔧 Rule Configuration
-
-Rules are defined in YAML with an intuitive syntax:
+YAML支持数值比较、字符串与集合条件、空值检查及AND/OR组合。`combine_logic`可选`any`、`all`、`score_threshold`；启用打分策略时必须提供阈值。数值等比较条件必须有`value`，空值条件可以省略它。
 
 ```yaml
-name: "My Risk Strategy"
-version: "1.0.0"
-combine_logic: "any"  # any | all | score_threshold
-
+name: age-check
+combine_logic: any
 rules:
-  - name: "High Risk Age"
-    description: "Applicants over 50 have elevated default risk"
+  - name: older-applicant
     conditions:
-      - field: "age"
-        operator: "gt"      # gt | gte | lt | lte | eq | ne
+      - field: age
+        operator: gt
         value: 50
-    logic: "and"            # and | or
-    action: "reject"        # accept | reject | review
-    score: 30               # For score_threshold strategies
-    enabled: true
-
-  - name: "Bad Credit + Low Income"
-    conditions:
-      - field: "credit_score"
-        operator: "lt"
-        value: 600
-      - field: "income"
-        operator: "lt"
-        value: 5000
-    logic: "and"
-    action: "reject"
-    enabled: true
+    logic: and
+    action: reject
 ```
 
-**Supported Operators:**
-- Numeric: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`
-- String: `contains`, `starts_with`, `ends_with`, `regex`
-- Set: `in`, `not_in`
-- Null: `is_null`, `is_not_null`
+`is_bad=1`计为坏样本。`reject`和`review`均计为命中，`accept`计为放行。指标在标签非空的记录上计算。A/B命名表示同批样本的两套规则离线对比，不表示线上随机分流实验。
 
-## 📝 License
+Python接口可以接收连续分数计算KS和AUC。当前CLI及Web入口不传连续分数，因此这两个指标显示`N/A`。零值指标显示0，只有未定义的指标显示缺失。
 
-MIT License - see [LICENSE](LICENSE) for details.
+## 自动验证与真实示例结果
 
-## 🤝 Contributing
+```bash
+python -m pytest
+python scripts/verify-example.py --output validation-output
+```
 
-Contributions are welcome! Please ensure:
-1. Code follows the existing style (`make format`)
-2. All tests pass (`make test`)
-3. Type checking passes (`make type-check`)
-4. Coverage remains above 80%
+2026年10月11日本地Python 3.12复核：72项测试通过。覆盖率统计只包含核心模块及工具模块，排除了CLI、Web和报告；见`docs/validation.json`。示例复核脚本运行CLI并生成四份报告，使用固定、人工可核对的预期结果检查指标。
 
----
+使用仓库原50行演示CSV与两份YAML得到：
 
-<p align="center">
-  Built with professionalism in mind. 🎯
-</p>
+| 指标 | A | B |
+| --- | --- | --- |
+| TP / FP / TN / FN | 20 / 0 / 30 / 0 | 17 / 0 / 30 / 3 |
+| 召回率 | 100% | 85% |
+| 误判率 | 0% | 0% |
+| 命中率 | 40% | 34% |
+| 放行率 | 60% | 66% |
+| F1 | 1.0000 | 0.9189 |
+| Lift | 2.50 | 2.50 |
+| KS / AUC | N/A / N/A | N/A / N/A |
+
+在此示例中，A召回率更高，B放行率更高。样本很小，不能据此推荐线上策略。演示数据来源及用途限定为仓库内练习，未接入真实信贷数据。
+
+[任务及验收示例](docs/task-example.md)给出输入输出与判定标准；[里程碑](docs/milestones.md)记录公开提交和本次修复，没有追补不存在的历史开发记录。
+
+## Docker和持续集成
+
+```bash
+docker build -t risk-control-validation .
+docker run --rm risk-control-validation
+```
+
+Docker默认执行同一示例复核入口。工作流文件为仓库根目录`.github/workflows/risk-control-quality.yml`，配置Python测试、示例验证和Docker构建运行。实际运行状态应查看[GitHub Actions](https://github.com/fang-2007/platform-tasks/actions/workflows/risk-control-quality.yml)。本地Docker环境不可用，不能把本地Python通过写成Docker通过；远端结果会在验证记录中单独记载。
+
+## 目录
+
+```text
+risk-control-evaluator/
+  configs/                    两套示例规则
+  data/sample_credit_data.csv  50行演示数据
+  src/risk_eval/
+    core/                     加载、质检、规则执行与评估
+    cli/                      Typer终端入口
+    web/                      Streamlit入口
+    report/                   Plotly图表与HTML报告
+    utils/                    配置、异常与日志
+  tests/                      原测试与边界回归验证
+  scripts/verify-example.py   可执行示例验收
+  docs/                      任务、里程碑与验证证据
+  Dockerfile
+  requirements-validation.txt
+  pyproject.toml
+```
+
+## 当前验证范围
+
+已验证核心测试及小样本CLI流程。未验证生产数据库、多版本兼容、线上效果或大规模性能。SQL及额外格式的支持范围应结合具体输入、依赖和测试判断。MIT许可见`LICENSE`。

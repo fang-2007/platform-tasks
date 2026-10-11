@@ -209,15 +209,15 @@ HTML_TEMPLATE = """
             <h2>Evaluation Metrics</h2>
             <div class="metrics-grid">
                 <div class="metric-card">
-                    <div class="metric-value">{{ "%.1f" | format(metrics.recall * 100) if metrics.recall else "N/A" }}%</div>
+                    <div class="metric-value">{{ "%.1f%%" | format(metrics.recall * 100) if metrics.recall is not none else "N/A" }}</div>
                     <div class="metric-label">Recall</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-value">{{ "%.1f" | format(metrics.precision * 100) if metrics.precision else "N/A" }}%</div>
+                    <div class="metric-value">{{ "%.1f%%" | format(metrics.precision * 100) if metrics.precision is not none else "N/A" }}</div>
                     <div class="metric-label">Precision</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-value">{{ "%.1f" | format(metrics.false_positive_rate * 100) if metrics.false_positive_rate else "N/A" }}%</div>
+                    <div class="metric-value">{{ "%.1f%%" | format(metrics.false_positive_rate * 100) if metrics.false_positive_rate is not none else "N/A" }}</div>
                     <div class="metric-label">False Positive Rate</div>
                 </div>
                 <div class="metric-card">
@@ -229,15 +229,15 @@ HTML_TEMPLATE = """
                     <div class="metric-label">Pass Rate</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-value">{{ "%.2f" | format(metrics.ks_statistic) if metrics.ks_statistic else "N/A" }}</div>
+                    <div class="metric-value">{{ "%.2f" | format(metrics.ks_statistic) if metrics.ks_statistic is not none else "N/A" }}</div>
                     <div class="metric-label">KS Statistic</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-value">{{ "%.3f" | format(metrics.auc_roc) if metrics.auc_roc else "N/A" }}</div>
+                    <div class="metric-value">{{ "%.3f" | format(metrics.auc_roc) if metrics.auc_roc is not none else "N/A" }}</div>
                     <div class="metric-label">AUC-ROC</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-value">{{ "%.2f" | format(metrics.lift) if metrics.lift else "N/A" }}</div>
+                    <div class="metric-value">{{ "%.2f" | format(metrics.lift) if metrics.lift is not none else "N/A" }}</div>
                     <div class="metric-label">Lift</div>
                 </div>
             </div>

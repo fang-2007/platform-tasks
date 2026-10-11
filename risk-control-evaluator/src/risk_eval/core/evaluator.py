@@ -245,11 +245,9 @@ class Evaluator:
         fnr = cm.false_negative / cm.positive_actual if cm.positive_actual > 0 else None
         specificity = cm.true_negative / cm.negative_actual if cm.negative_actual > 0 else None
         accuracy = (cm.true_positive + cm.true_negative) / n if n > 0 else None
-        f1 = (
-            2 * precision * recall / (precision + recall)
-            if precision and recall and (precision + recall) > 0
-            else None
-        )
+        f1 = None
+        if precision is not None and recall is not None:
+            f1 = 2 * precision * recall / (precision + recall) if precision + recall > 0 else 0.0
 
         # Risk-specific metrics
         bad_rate_overall = cm.positive_actual / n if n > 0 else None
@@ -258,7 +256,7 @@ class Evaluator:
 
         lift = (
             bad_rate_in_hits / bad_rate_overall
-            if bad_rate_in_hits and bad_rate_overall and bad_rate_overall > 0
+            if bad_rate_in_hits is not None and bad_rate_overall is not None and bad_rate_overall > 0
             else None
         )
 

@@ -1,2 +1,0 @@
-[console_scripts]
-risk-eval = risk_eval.cli.main:app

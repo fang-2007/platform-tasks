@@ -38,7 +38,7 @@ class Condition(BaseModel):
 
     field: str = Field(..., description="Column name to evaluate")
     operator: ComparisonOperator = Field(..., description="Comparison operator")
-    value: Any = Field(None, description="Value to compare against")
+    value: Any = Field(None, description="Value to compare against", validate_default=True)
 
     @field_validator("value")
     @classmethod
@@ -75,7 +75,9 @@ class RuleSetConfig(BaseModel):
     combine_logic: Literal["any", "all", "score_threshold"] = Field(
         "any", description="How rules combine into final decision"
     )
-    score_threshold: int | None = Field(None, description="Threshold for score-based strategy")
+    score_threshold: int | None = Field(
+        None, description="Threshold for score-based strategy", validate_default=True
+    )
 
     @field_validator("score_threshold")
     @classmethod

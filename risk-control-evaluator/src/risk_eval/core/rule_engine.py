@@ -19,7 +19,7 @@ logger = get_logger(__name__)
 class RuleEngineProtocol(Protocol):
     """Protocol for rule engine implementations."""
 
-    def execute(self, df: pd.DataFrame) -> RuleExecutionResult:
+    def execute(self, df: pd.DataFrame) -> RuleExecutionSummary:
         """Execute rules against data."""
         ...
 
@@ -296,7 +296,7 @@ class RuleEngine:
         if row_index not in df.index:
             raise RuleExecutionError(f"Row index {row_index} not found")
 
-        row = df.loc[row_index:row_index]
+        row = df.loc[[row_index]]
         explanations = []
 
         for rule in self.config.rules:
@@ -304,29 +304,28 @@ class RuleEngine:
                 continue
 
             condition_results = []
-            all_hit = True
+            condition_hits: list[bool] = []
 
             for condition in rule.conditions:
                 try:
                     hit = self.condition_executor.execute(row, condition).iloc[0]
                 except Exception as exc:
                     hit = False
-                    all_hit = False
                 condition_results.append({
                     "field": condition.field,
                     "operator": condition.operator,
                     "value": condition.value,
                     "hit": bool(hit),
                 })
-                if rule.logic == LogicalOperator.AND and not hit:
-                    all_hit = False
-                elif rule.logic == LogicalOperator.OR and hit:
-                    all_hit = True
-                    break
+                condition_hits.append(bool(hit))
+
+            rule_hit = bool(condition_hits) and (
+                all(condition_hits) if rule.logic == LogicalOperator.AND else any(condition_hits)
+            )
 
             explanations.append({
                 "rule_name": rule.name,
-                "rule_hit": all_hit,
+                "rule_hit": rule_hit,
                 "action": rule.action,
                 "conditions": condition_results,
             })

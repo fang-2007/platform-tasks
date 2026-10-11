@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [
-    { name = "Developer", email = "dev@example.com" }
+    { name = "fang-2007" }
 ]
 keywords = ["risk-control", "data-quality", "rule-engine", "evaluation", "fintech"]
 classifiers = [
@@ -26,6 +26,7 @@ classifiers = [
 ]
 dependencies = [
     "pandas>=2.0.0",
+    "pyarrow>=14.0.0",
     "numpy>=1.24.0",
     "pydantic>=2.0.0",
     "pyyaml>=6.0",
@@ -56,9 +57,9 @@ all = ["risk-control-evaluator[web,dev]"]
 risk-eval = "risk_eval.cli.main:app"
 
 [project.urls]
-Homepage = "https://github.com/yourusername/risk-control-evaluator"
-Repository = "https://github.com/yourusername/risk-control-evaluator"
-Issues = "https://github.com/yourusername/risk-control-evaluator/issues"
+Homepage = "https://github.com/fang-2007/platform-tasks/tree/main/risk-control-evaluator"
+Repository = "https://github.com/fang-2007/platform-tasks"
+Issues = "https://github.com/fang-2007/platform-tasks/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]

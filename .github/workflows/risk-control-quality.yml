@@ -1,0 +1,37 @@
+name: Risk control validation
+on:
+  push:
+    paths:
+      - 'risk-control-evaluator/**'
+      - '.github/workflows/risk-control-quality.yml'
+  pull_request:
+    paths:
+      - 'risk-control-evaluator/**'
+      - '.github/workflows/risk-control-quality.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: risk-control-evaluator
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-validation.txt
+      - run: python -m pip install --no-deps -e .
+      - run: python -m pytest --junitxml=validation-tests.xml
+      - run: python scripts/verify-example.py --output validation-output
+      - run: docker build -t risk-control-validation .
+      - run: docker run --rm risk-control-validation
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: risk-control-validation
+          path: |
+            risk-control-evaluator/validation-tests.xml
+            risk-control-evaluator/validation-output/

@@ -1,0 +1,19 @@
+{
+  "validationDate": "2026-10-11",
+  "baseCommit": "88d74d079bb791712f1edc74e49c596af133cf57",
+  "testsPassed": 72,
+  "testsFailed": 0,
+  "coreCoveragePercent": 87.2,
+  "coverageExcludes": [
+    "cli",
+    "web",
+    "report"
+  ],
+  "localPlatform": "Windows Python 3.12.14",
+  "cliWorkflow": "passed, four reports",
+  "sampleRows": 50,
+  "dockerLocal": "not available",
+  "ci": "configured; pending remote execution",
+  "assistance": "Code fixes, tests and documentation completed with Codex",
+  "productionPerformance": "not measured"
+}

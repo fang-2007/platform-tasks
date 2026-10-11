@@ -181,16 +181,16 @@ def render_evaluation_tab(
 
     # Metrics cards
     cols = st.columns(4)
-    cols[0].metric("Recall", f"{metrics.recall:.1%}" if metrics.recall else "N/A")
-    cols[1].metric("Precision", f"{metrics.precision:.1%}" if metrics.precision else "N/A")
-    cols[2].metric("FPR (Misjudgment)", f"{metrics.false_positive_rate:.1%}" if metrics.false_positive_rate else "N/A")
+    cols[0].metric("Recall", f"{metrics.recall:.1%}" if metrics.recall is not None else "N/A")
+    cols[1].metric("Precision", f"{metrics.precision:.1%}" if metrics.precision is not None else "N/A")
+    cols[2].metric("FPR (Misjudgment)", f"{metrics.false_positive_rate:.1%}" if metrics.false_positive_rate is not None else "N/A")
     cols[3].metric("Hit Rate", f"{metrics.hit_rate:.1%}")
 
     cols2 = st.columns(4)
     cols2[0].metric("Pass Rate", f"{metrics.pass_rate:.1%}")
-    cols2[1].metric("Accuracy", f"{metrics.accuracy:.1%}" if metrics.accuracy else "N/A")
-    cols2[2].metric("KS Statistic", f"{metrics.ks_statistic:.3f}" if metrics.ks_statistic else "N/A")
-    cols2[3].metric("AUC-ROC", f"{metrics.auc_roc:.3f}" if metrics.auc_roc else "N/A")
+    cols2[1].metric("Accuracy", f"{metrics.accuracy:.1%}" if metrics.accuracy is not None else "N/A")
+    cols2[2].metric("KS Statistic", f"{metrics.ks_statistic:.3f}" if metrics.ks_statistic is not None else "N/A")
+    cols2[3].metric("AUC-ROC", f"{metrics.auc_roc:.3f}" if metrics.auc_roc is not None else "N/A")
 
     # Charts
     chart_gen = ChartGenerator()

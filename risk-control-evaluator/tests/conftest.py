@@ -9,7 +9,7 @@ from typing import Any
 import pandas as pd
 import pytest
 
-from risk_eval.utils.config import Condition, LogicalOperator, RuleConfig, RuleSetConfig
+from risk_eval.utils.config import ComparisonOperator, Condition, LogicalOperator, RuleConfig, RuleSetConfig
 
 
 @pytest.fixture
