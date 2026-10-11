@@ -1,0 +1,120 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "risk-control-evaluator"
+version = "0.1.0"
+description = "A professional risk control data quality and strategy evaluation toolkit"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Developer", email = "dev@example.com" }
+]
+keywords = ["risk-control", "data-quality", "rule-engine", "evaluation", "fintech"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = [
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "pydantic>=2.0.0",
+    "pyyaml>=6.0",
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    "plotly>=5.18.0",
+    "jinja2>=3.1.0",
+    "openpyxl>=3.1.0",
+    "sqlalchemy>=2.0.0",
+    "structlog>=23.0.0",
+    "scikit-learn>=1.3.0",
+    "scipy>=1.11.0",
+]
+
+[project.optional-dependencies]
+web = ["streamlit>=1.28.0"]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "mypy>=1.6.0",
+    "ruff>=0.1.0",
+    "types-pyyaml",
+    "types-openpyxl",
+]
+all = ["risk-control-evaluator[web,dev]"]
+
+[project.scripts]
+risk-eval = "risk_eval.cli.main:app"
+
+[project.urls]
+Homepage = "https://github.com/yourusername/risk-control-evaluator"
+Repository = "https://github.com/yourusername/risk-control-evaluator"
+Issues = "https://github.com/yourusername/risk-control-evaluator/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+select = [
+    "E",   # pycodestyle errors
+    "F",   # Pyflakes
+    "I",   # isort
+    "N",   # pep8-naming
+    "W",   # pycodestyle warnings
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "SIM", # flake8-simplify
+]
+ignore = ["E501"]
+
+[tool.ruff.pydocstyle]
+convention = "google"
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = false
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "--cov=src/risk_eval --cov-report=term-missing --cov-fail-under=80"
+
+[tool.coverage.run]
+source = ["src/risk_eval"]
+omit = ["*/tests/*", "*/web/*", "*/cli/*", "*/report/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]

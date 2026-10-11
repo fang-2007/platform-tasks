@@ -1,0 +1,59 @@
+name: "Conservative Strategy A"
+description: "Focus on credit history and debt burden - lower false positive rate"
+version: "1.0.0"
+combine_logic: "any"
+rules:
+  - name: "Very Low Credit Score"
+    description: "Credit score below 600 indicates high risk"
+    conditions:
+      - field: "credit_score"
+        operator: "lt"
+        value: 600
+    logic: "and"
+    action: "reject"
+    score: 50
+    enabled: true
+
+  - name: "High DTI Ratio"
+    description: "Debt-to-income ratio above 45% is unsustainable"
+    conditions:
+      - field: "dti_ratio"
+        operator: "gt"
+        value: 0.45
+    logic: "and"
+    action: "reject"
+    score: 40
+    enabled: true
+
+  - name: "Recent Default History"
+    description: "Applicant has a previous default record"
+    conditions:
+      - field: "has_default"
+        operator: "eq"
+        value: 1
+    logic: "and"
+    action: "reject"
+    score: 35
+    enabled: true
+
+  - name: "Excessive Credit Inquiries"
+    description: "Too many recent credit inquiries suggest desperation"
+    conditions:
+      - field: "num_credit_inquiries"
+        operator: "gt"
+        value: 6
+    logic: "and"
+    action: "review"
+    score: 20
+    enabled: true
+
+  - name: "Short Employment History"
+    description: "Less than 6 months employment is unstable"
+    conditions:
+      - field: "employment_months"
+        operator: "lt"
+        value: 6
+    logic: "and"
+    action: "review"
+    score: 15
+    enabled: true

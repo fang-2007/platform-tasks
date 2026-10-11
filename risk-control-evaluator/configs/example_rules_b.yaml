@@ -1,0 +1,73 @@
+name: "Aggressive Strategy B"
+description: "Focus on behavioral signals and device risk - higher recall"
+version: "1.0.0"
+combine_logic: "any"
+rules:
+  - name: "Low Credit Score"
+    description: "Credit score below 650 indicates elevated risk"
+    conditions:
+      - field: "credit_score"
+        operator: "lt"
+        value: 650
+    logic: "and"
+    action: "reject"
+    score: 40
+    enabled: true
+
+  - name: "High Device Risk"
+    description: "Device risk score above 60 suggests fraudulent activity"
+    conditions:
+      - field: "device_risk_score"
+        operator: "gt"
+        value: 60
+    logic: "and"
+    action: "reject"
+    score: 45
+    enabled: true
+
+  - name: "Young Age Risk"
+    description: "Applicants under 25 have higher default rates"
+    conditions:
+      - field: "age"
+        operator: "lt"
+        value: 25
+    logic: "and"
+    action: "review"
+    score: 20
+    enabled: true
+
+  - name: "High DTI"
+    description: "Debt-to-income ratio above 40% is concerning"
+    conditions:
+      - field: "dti_ratio"
+        operator: "gt"
+        value: 0.40
+    logic: "and"
+    action: "reject"
+    score: 35
+    enabled: true
+
+  - name: "Multiple Inquiries"
+    description: "More than 3 recent credit inquiries"
+    conditions:
+      - field: "num_credit_inquiries"
+        operator: "gt"
+        value: 3
+    logic: "and"
+    action: "review"
+    score: 15
+    enabled: true
+
+  - name: "Low Income High Loan"
+    description: "Loan amount > 4x monthly income"
+    conditions:
+      - field: "loan_amount"
+        operator: "gt"
+        value: 40000
+      - field: "income"
+        operator: "lt"
+        value: 10000
+    logic: "and"
+    action: "reject"
+    score: 30
+    enabled: true
